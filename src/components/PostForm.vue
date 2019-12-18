@@ -40,5 +40,10 @@ input {
   padding: 10px;
   margin-bottom: 10px;
 }
+button {
+  margin: 10px auto;
+  border: 1px solid black;
+  border-radius: 2px;
+}
 </style>
 
