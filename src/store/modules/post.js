@@ -1,27 +1,39 @@
 export default {
   actions: {
-    async fetchPosts(ctx, limit = 3) {
+    async fetchPosts({ commit, getters, dispatch }, limit = 3) {
       const res = await fetch(
-        "https://jsonplaceholder.typicode.com/posts?_limit=" + limit
-      );
-      const posts = await res.json();
-      ctx.commit("updatePosts", posts);
-    }
+        'https://jsonplaceholder.typicode.com/posts?_limit=' + limit
+      )
+      const posts = await res.json()
+
+      dispatch('sayHello')
+
+      commit('updatePosts', posts)
+    },
+    sayHello() {}
   },
   mutations: {
     updatePosts(state, posts) {
-      state.posts = posts;
+      state.posts = posts
+    },
+    createPost(state, newPost) {
+      state.posts.unshift(newPost)
     }
   },
   state: {
     posts: []
   },
   getters: {
-    allPosts(state) {
-      return state.posts;
+    validPosts(state) {
+      return state.posts.filter(p => {
+        return p.title && p.body
+      })
     },
-    postsCount(state) {
-      return state.posts.lenght;
+    allPosts(state) {
+      return state.posts
+    },
+    postsCount(state, getters) {
+      return getters.validPosts.length
     }
   }
-};
+}
